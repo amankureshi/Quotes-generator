@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote Practice 3</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;1,500&display=swap');
+
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            --color: #00ffff;
+            background: var(--color);
+            transition: 0.3s;
+        }
+
+        .box {
+            display: flex;
+            background-color: #fff;
+            border-radius: 20px;
+            padding: 40px;
+            justify-content: center;
+            text-align: center;
+            margin-top: 30px;
+            width: 100%;
+            flex-direction: column;
+            max-width: 600px;
+            gap: 20px;
+        }
+
+        .box i {
+            color: var(--color);
+            font-size: 3rem;
+        }
+
+        .box .author {
+            font-family: 'Poppins', sans-serif;
+            color: #3b3a3a;
+        }
+
+        button {
+            border: none;
+            color: white;
+            border-radius: 5px;
+            font-size: 20px;
+            cursor: pointer;
+            margin-top: 30px;
+            display: inline-block;
+            text-transform: uppercase;
+            margin: auto;
+            padding: 20px 30px;
+            background: var(--color);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <i class="fa-solid fa-quote-left"></i>
+        <!-- <h1>Quote Of The day</h1> -->
+        <h1>
+            <span class="quote"></span>
+        </h1>
+        <p>-<em class="author"></em></p>
+        <button onclick="btnClick()">New Qoute</button>
+
+    </div>
+    <script>
+
+        //My Demo----------->
+
+        fetch('https://type.fit/api/quotes').then(res => res.json()).then(data => myList(data))
+
+        let quoteList;
+        function myList(list) {
+            quoteList = list;
+            filter(list)
+        }
+
+
+        // to get random HEXCODE
+        const randomHexColorCode = () => {
+            let n = (Math.random() * 0xfffff * 1000000).toString(16);
+            return '#' + n.slice(0, 6);
+        };
+
+        function filter(list) {
+            const random = Math.floor(Math.random() * 11)
+            const text = list[random].text;
+            const auther = list[random].author
+            const span = document.querySelector('span')
+            const auu = document.querySelector('em')
+            span.innerText = text;
+            auu.innerText = auther;
+            document.body.style.setProperty('--color', randomHexColorCode());
+
+        }
+
+
+        function btnClick() {
+            filter(quoteList)
+            // fetch('https://type.fit/api/quotes').then(res => res.json()).then(data => filter(data))
+            // const random = Math.floor(Math.random() * 16);
+            // document.body.style.setProperty('--color', randomHexColorCode());
+        }
+
+    </script>
+    <script src="https://kit.fontawesome.com/270c579228.js" crossorigin="anonymous"></script>
+</body>
+
+</html>
