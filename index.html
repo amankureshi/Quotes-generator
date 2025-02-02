@@ -8,8 +8,6 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;1,500&display=swap');
 
-
-
         * {
             margin: 0;
             padding: 0;
@@ -44,6 +42,10 @@
         .box i {
             color: var(--color);
             font-size: 3rem;
+        }
+
+        .box h1 .quote {
+            font-size: 1.4rem;
         }
 
         .box .author {
@@ -81,36 +83,29 @@
     <script>
 
         //My Demo----------->
+        let quotesData = []; // Variable to store the quotes data
 
+        // Fetch quotes data only once when page loads
         fetch('https://gist.githubusercontent.com/camperbot/5a022b72e96c4c9585c32bf6a75f62d9/raw/e3c6895ce42069f0ee7e991229064f167fe8ccdc/quotes.json')
             .then(res => res.json())
-            .then(data => myList(data));
+            .then(data => {
+                quotesData = data.quotes; // Store the quotes data
+                displayQuote(); // Display the first quote
+            });
 
-        let quoteList;
-        function myList(list) {
-            console.log(list);
-            quoteList = list;
-            filter(list);
+        // Function to display random quote
+        function displayQuote() {
+            const randomQuote = quotesData[Math.floor(Math.random() * quotesData.length)];
+            if (randomQuote && randomQuote.quote && randomQuote.author) {
+                document.querySelector('span').innerText = randomQuote.quote;
+                document.querySelector('em').innerText = randomQuote.author;
+                document.body.style.setProperty('--color', '#' + Math.floor(Math.random() * 16777215).toString(16));
+            }
         }
 
-        const randomHexColorCode = () => {
-            let n = (Math.random() * 0xfffff * 1000000).toString(16);
-            return '#' + n.slice(0, 6);
-        };
-
-        function filter(list) {
-            const random = Math.floor(Math.random() * list.length);  // Ensure random is within bounds
-            const text = list[random].quote;
-            const auther = list[random].author;
-            const span = document.querySelector('span');
-            const auu = document.querySelector('em');
-            span.innerText = text;
-            auu.innerText = auther;
-            document.body.style.setProperty('--color', randomHexColorCode());
-        }
-
+        // Button click event handler
         function btnClick() {
-            filter(quoteList);
+            displayQuote(); // Call displayQuote to show new quote without fetching data again
         }
 
 
